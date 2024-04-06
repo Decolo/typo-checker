@@ -1,3 +1,4 @@
+import { css } from "@emotion/css"
 import {
   Button,
   Card,
@@ -8,11 +9,10 @@ import {
   Spinner
 } from "@nextui-org/react"
 import axios from "axios"
-import cssText from "data-text:~/contents/overlay.css"
+import cssText from "data-text:~/global.css"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useState } from "react"
-
-import "../global.css"
+import { useStorage } from "@plasmohq/storage/hook"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://*/*"]
@@ -35,15 +35,22 @@ const Popover = () => {
   const [checkResult, setCheckResult] = useState<string | null>(null)
   const [resultLoading, setResultLoading] = useState(false)
 
+  const [storageApiKey] = useStorage("ft-api-key", "")
+
   const checkTypoByApi = () => {
     if (!sectionInfo?.text) return
+
+    if (!storageApiKey) {
+      setCheckResult("Oops, something went wrong, please contact the developer: caicheng.fe.dev@gmail.com")
+      return;
+    }
 
     const url = "https://api.openai-hk.com/v1/chat/completions"
 
     const headers = {
       "Content-Type": "application/json",
       Authorization:
-        "Bearer hk-t8eq9u10000260568c4d13fc8a3986e15b0b42f6d0238e24"
+        `Bearer ${storageApiKey}`
     }
 
     const data = {
@@ -111,8 +118,9 @@ const Popover = () => {
     <NextUIProvider>
       {sectionInfo?.text && (
         <main
-          className={"popover light shadow-lg"}
+          className={'light shadow-lg'}
           style={{
+            position: "fixed",
             left: sectionInfo?.x,
             top: sectionInfo?.y
           }}>
