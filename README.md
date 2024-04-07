@@ -1,3 +1,8 @@
+# Introduction
+This is a browser extension, support selecting words on page, and check typo then based on openai api.
+Further features is on the way.
+
+# How to start
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
 ## Getting Started
